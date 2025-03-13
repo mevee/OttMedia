@@ -15,10 +15,10 @@ import kotlinx.coroutines.withContext
 class MovieViewModel :
     ViewModel() {
     val tag = "MovieViewModel"
-    val repo: MovieRepository = MovieRepository()
-    val _pageData = MutableLiveData<Category>()
+    private val repo: MovieRepository = MovieRepository()
+    private val _pageData = MutableLiveData<Category>()
     val viewPageData: LiveData<Category> = _pageData
-    val _homePageData = MutableLiveData<List<Category>>()
+    private val _homePageData = MutableLiveData<List<Category>>()
     val homePageLiveData: LiveData<List<Category>> = _homePageData
     val movieList = MutableLiveData<List<Movie>>()
     val isLoading = MutableLiveData<Boolean>(false)

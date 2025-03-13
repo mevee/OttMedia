@@ -35,33 +35,34 @@ import com.vee.musicapp.viewmodel.MovieViewModel
 @Composable
 fun HorizontalMovieList(movies: List<Movie>, focusId: String, viewModel: MovieViewModel) {
 //    var hasFocus by remember { mutableStateOf(false) }
-
+    ProvideLazyListPivotOffset (parentFraction = .0f){
     LazyRow(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(20.dp), // Spacing between cards
-        contentPadding = PaddingValues(horizontal = 16.dp) // Padding at start and end
+        contentPadding = PaddingValues(horizontal = 16.dp), // Padding at start and end
+
     ) {
-        items(movies) { movie ->
+        items(movies) { movie, ->
             MovieCardH(movie, focusId) { hasFocus ->
                 Log.d("MovieCardH", "${movie.id}hasFocus$hasFocus")
                 viewModel.updateFocus(movie.id)
             }
         }
-    }
+    }}
 }
 
 @Composable
 fun MovieCardH(movie: Movie, focusId: String, onFocusChange: (Boolean) -> Unit) {
     var hasFocus by remember { mutableStateOf(false) }
-    val focusRequester = remember { FocusRequester() }
+//    val focusRequester = remember { FocusRequester() }
 
     Card(modifier = Modifier
         .height(100.dp)
         .height(if (focusId == movie.id) 180.dp else 100.dp)
         .aspectRatio(2.0f)
         .focusable()
-        .focusRequester(focusRequester)
+//        .focusRequester(focusRequester)
         .onFocusChanged { focusState ->
             hasFocus = focusState.isFocused
             onFocusChange(focusState.isFocused)

@@ -54,35 +54,30 @@ fun HorizontalPageView(pageData: Category) {
 fun HorizontalPageList(pages: List<Movie>) {
     val pagerState = rememberPagerState(pageCount = { pages.size })
     val coroutineScope = rememberCoroutineScope()
-
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // The pager itself with peek effect
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(2f),
-            pageSpacing = 8.dp,  // Space between pages
-            // This creates the peek effect
-        ) { pageIndex ->
-            // Page content
-            PagerItem(pages[pageIndex])
-
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        // Page indicator dots
-        PageIndicator(
-            pagerState = pagerState,
-            pageCount = pages.size,
-            onDotClick = { page ->
-                coroutineScope.launch {
-                    pagerState.animateScrollToPage(page)
-                }
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                pageSpacing = 8.dp,  // Space between pages
+                // This creates the peek effect
+            ) { pageIndex ->
+                // Page content
+                PagerItem(pages[pageIndex])
             }
-        )
+            PageIndicator(
+                pagerState = pagerState,
+                pageCount = pages.size,
+                onDotClick = { page ->
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(page)
+                    }
+                }
+            )
 
     }
 }
@@ -105,7 +100,6 @@ fun PageIndicator(
                 targetValue = if (isSelected) 12.dp else 8.dp,
                 label = "DotSize"
             )
-
             Box(
                 modifier = Modifier
                     .padding(4.dp)
@@ -123,16 +117,21 @@ fun PageIndicator(
 
 @Composable
 private fun PagerItem(movie: Movie) {
-    Box(modifier = Modifier.fillMaxSize().focusable().onFocusEvent { focusState ->
-        when {
-            focusState.isFocused ->
-                println("I'm focused!")
-            focusState.hasFocus ->
-                println("A child of mine has focus!")
-            focusState.isCaptured ->
-                println("A child of mine has focus!")
-        }
-    }) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .focusable()
+        .onFocusEvent { focusState ->
+            when {
+                focusState.isFocused ->
+                    println("I'm focused!")
+
+                focusState.hasFocus ->
+                    println("A child of mine has focus!")
+
+                focusState.isCaptured ->
+                    println("A child of mine has focus!")
+            }
+        }) {
         // Background Image
         AsyncImage(
             model = movie.url,
@@ -151,7 +150,7 @@ private fun PagerItem(movie: Movie) {
                 .width(500.dp)
                 .background(
                     Brush.horizontalGradient(
-                        listOf(Color.Black, Color.Black,Color.Black.copy(alpha = 0.01f))
+                        listOf(Color.Black, Color.Black, Color.Black.copy(alpha = 0.01f))
                     )
                 )
                 .blur(10.dp)
@@ -165,6 +164,7 @@ private fun PagerItem(movie: Movie) {
                 .padding(16.dp)
                 .align(Alignment.CenterStart)
         ) {
+            Spacer(modifier = Modifier.height(8.dp))
             Text(text = movie.name, fontSize = 20.sp, color = Color.White)
             Text(
                 modifier = Modifier.padding(top = 8.dp),
