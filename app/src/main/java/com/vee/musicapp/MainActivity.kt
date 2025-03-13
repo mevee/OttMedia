@@ -23,7 +23,6 @@ class MainActivity : ComponentActivity() {
         viewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
         setContent {
             MusicAppTheme {
-//                MyImmersiveApp()
                 HomeScreen(viewModel)
             }
         }

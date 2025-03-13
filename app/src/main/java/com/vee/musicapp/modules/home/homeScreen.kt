@@ -20,12 +20,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.tv.foundation.PivotOffsets
-import androidx.tv.foundation.lazy.list.TvLazyColumn
-import androidx.tv.foundation.lazy.list.items
 import com.vee.musicapp.data.models.Category
 import com.vee.musicapp.viewmodel.MovieViewModel
-
 
 @Composable
 fun HomeScreen(viewModel: MovieViewModel){
@@ -38,9 +34,7 @@ fun HomeScreen(viewModel: MovieViewModel){
                     modifier = Modifier.weight(.8f)
                 ) {
                     val pageData by viewModel.viewPageData.observeAsState(
-                        Category(
-                            name = "", type = "H", movies = emptyList()
-                        )
+                        Category(name = "", type = "H", movies = emptyList())
                     )
                     HorizontalPageView(pageData)
                 }
@@ -64,9 +58,9 @@ fun bottomView(viewModel: MovieViewModel) {
     val lazyListState = rememberLazyListState()
 
     Box {
-        ProvideLazyListPivotOffset (parentFraction = .5f){
+        ProvideLazyListPivotOffset (){
             LazyColumn(
-            modifier = Modifier.fillMaxSize().focusable(),
+            modifier = Modifier.fillMaxSize(),
                 state = lazyListState
 //            pivotOffsets = PivotOffsets(0.0f)
         ) {

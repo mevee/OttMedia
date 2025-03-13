@@ -3,7 +3,6 @@ package com.vee.musicapp.modules.immersive
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -30,11 +29,11 @@ fun FocusableItem(text: String) {
         modifier = Modifier
             .width(200.dp)
             .height(100.dp)
-            .focusable()
             .focusRequester(focusRequester)
             .onFocusChanged { isFocused.value = it.isFocused }
             .background(if (isFocused.value) Color.White.copy(alpha = 0.2f) else Color.Transparent)
-            .padding(16.dp),
+            .padding(16.dp)
+            .focusable(),
         contentAlignment = Alignment.Center
     ) {
         Text(text = text, color = Color.White, fontSize = if (isFocused.value) 24.sp else 20.sp)
