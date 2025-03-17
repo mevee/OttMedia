@@ -13,6 +13,8 @@ tv-foundation = "1.0.0-alpha11"
 tv-material = "1.0.0"
 junitJunit = "4.12"
 junitJupiter = "5.8.1"
+hiltNavigationFragment = "1.2.0"
+hiltCompiler = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,6 +36,8 @@ tv-foundation = { group = "androidx.tv", name = "tv-foundation", version.ref = "
 tv-material = { group = "androidx.tv", name = "tv-material", version.ref = "tv-material" }
 junit-junit = { group = "junit", name = "junit", version.ref = "junitJunit" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
+androidx-hilt-navigation-fragment = { group = "androidx.hilt", name = "hilt-navigation-fragment", version.ref = "hiltNavigationFragment" }
+androidx-hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltCompiler" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

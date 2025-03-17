@@ -4,7 +4,7 @@ import com.vee.musicapp.data.models.Category
 import com.vee.musicapp.data.models.Movie
 
 class AppData {
-    companion object{
+
         fun getHomePageData():List<Category>{
             val mArray = mutableListOf<Category>()
 //            mArray.add(Category(type = "V", name = "Recently Launched1", movies = getMovieListVertical().toList()))
@@ -30,7 +30,34 @@ class AppData {
             return mArray
         }
 
-         fun getMovieListVertical(): Array<Movie> {
+         fun getNextMovieListVertical(): Array<Movie> {
+            return arrayOf(
+                Movie(
+                    name = "The Parenting",
+                    subTitle = "Boyfriends Josh and Rohan plan a weekend getaway to introduce their parents, only to discover that their rental is home to a 400-year-old poltergeist.",
+                    url = "https://artworks.thetvdb.com/banners/v4/movie/350369/posters/67ae5d7b8348f.jpg"
+                ),
+                Movie(
+                    name = "Toy Story",
+                    subTitle = "By Apple tv for Apple sales",
+                    url = "https://artworks.thetvdb.com/banners/v4/list/unknown/posters/6425e70126a67.jpg"
+                ),
+                Movie(
+                    name = "Hotel Transylvania Franchise",
+                    subTitle = "\n" +
+                            "\n" +
+                            "The (mis)adventures of monsters residing in Hotel Transylvania, a plaza hotel where monsters can relax and get away from humans due to fear of persecution.\n",
+                    url = "https://artworks.thetvdb.com/banners/v4/list/unknown/posters/62ecff1278acf.jpg"
+                ),
+                Movie(
+                    name = "The Electric State",
+                    subTitle = "\n" +
+                            "\n" +
+                            "An orphaned teen hits the road with a mysterious robot to find her long-lost brother, teaming up with a smuggler and his wisecracking sidekick.\n",
+                    url = "https://artworks.thetvdb.com/banners/v4/movie/158077/posters/67b8f82b6c705.jpg"
+                ),
+            )
+        }  fun getMovieListVertical(): Array<Movie> {
             return arrayOf(
                 Movie(
                     name = "Snow Worlf",
@@ -154,7 +181,5 @@ class AppData {
                 ),
             )
         }
-    }
-
 
 }
