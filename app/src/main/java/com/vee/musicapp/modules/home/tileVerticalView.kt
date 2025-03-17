@@ -1,6 +1,7 @@
 package com.vee.musicapp.modules.home
 
 import android.util.Log
+import androidx.compose.foundation.border
 
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,10 +18,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -32,6 +38,7 @@ fun VerticalMovieList(movies: List<Movie>, focusId: String) {
     LazyRow(
         modifier = Modifier
             .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp), // Spacing between cards
         contentPadding = PaddingValues(horizontal = 16.dp) // Padding at start and end
     ) {
@@ -43,23 +50,22 @@ fun VerticalMovieList(movies: List<Movie>, focusId: String) {
 }
 
 @Composable
-fun MovieCardV(movie: Movie, onFocusChange: (Boolean) -> Unit) {
-    Box(
-        modifier = Modifier
-            .width(120.dp)
-            .height(200.dp),
-    ) {
+fun MovieCardV(movie: Movie, onClick: () -> Unit) {
+    var hasFocus by remember { mutableStateOf(false) }
         Card(
             modifier = Modifier
                 .fillMaxSize()
+                .width(if(hasFocus) 140.dp else 120.dp)
+                .border(width = if(hasFocus)6.dp else 0.dp,
+                    shape = RoundedCornerShape(8.dp),
+                    color = if(hasFocus) Color.White else Color.Transparent)
                 .aspectRatio(.66f)
-                .focusTarget()
-                .onFocusChanged { focusState ->
-                    onFocusChange(focusState.isFocused)
-                    Log.d("MovieCardV", "${movie.id}isFocused${focusState.isFocused}")
-                }.focusable(),
+                .onFocusChanged {
+                    hasFocus =it.hasFocus
+                },
             shape = RoundedCornerShape(6.dp),
-            elevation = CardDefaults.elevatedCardElevation(4.dp)
+            elevation = CardDefaults.elevatedCardElevation(4.dp),
+            onClick = onClick
         ) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -77,5 +83,5 @@ fun MovieCardV(movie: Movie, onFocusChange: (Boolean) -> Unit) {
 
             }
         }
-    }
+
 }

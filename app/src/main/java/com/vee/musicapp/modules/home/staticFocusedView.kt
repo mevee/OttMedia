@@ -31,10 +31,13 @@ fun StaticFocusedView(selectedShow: Movie?, isHorizontal: Boolean = true) {
             .border(3.dp, Color.White, shape = RoundedCornerShape(8.dp))
             .onGloballyPositioned { layoutCoordinates ->
                 position = layoutCoordinates.positionInRoot() // Get position relative to root
-            }.focusable()// Makes it focusable but static
+            }
+//            .focusable()// Makes it focusable but static
     ){
         if(selectedShow!=null)
-        MovieCardH(  selectedShow,"") {}
+        MovieCardH(  selectedShow) {
+
+        }
     }
     if (!isHorizontal) Box(
         modifier = Modifier

@@ -15,7 +15,7 @@ class AppData {
             mArray.add(Category(type = "H", name = "Sports News6", movies = getMovieListHorizontal().toList()))
 //            mArray.add(Category(type = "V", name = "Recently Launched7", movies = getMovieListVertical().toList()))
             mArray.add(Category(type = "H", name = "Live Tv Guide8", movies = getMovieListHorizontal().toList()))
-//            mArray.add(Category(type = "V", name = "Recently Launched9", movies = getMovieListVertical().toList()))
+            mArray.add(Category(type = "V", name = "Recently Launched9", movies = getMovieListVertical().toList()))
             mArray.add(Category(type = "H", name = "Romantic10", movies = getMovieListHorizontal().toList()))
 //            mArray.add(Category(type = "V", name = "Thriller11", movies = getMovieListVertical().toList()))
             mArray.add(Category(type = "H", name = "Sports News12", movies = getMovieListHorizontal().toList()))
