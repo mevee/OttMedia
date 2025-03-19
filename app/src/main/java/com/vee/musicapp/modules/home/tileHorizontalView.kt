@@ -1,8 +1,8 @@
 package com.vee.musicapp.modules.home
 
 import android.util.Log
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -23,9 +23,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.vee.musicapp.data.models.Movie
@@ -34,26 +37,28 @@ import com.vee.musicapp.viewmodel.MovieViewModel
 
 
 @Composable
-fun HorizontalMovieList(movies: List<Movie>, viewModel: MovieViewModel) {
+fun HorizontalMovieList(movies: List<Movie>,onClick: ((Movie) -> Unit)?=null) {
     Log.d("HorizontalMovieList", "movies: $movies")
+    val configuration = LocalConfiguration.current
 //    val bringIntoViewRequester = remember { BringIntoViewRequester() }
-    LazyRow(
+      LazyRow(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
+//          horizontalArrangement = Arrangement.Start,
         horizontalArrangement = Arrangement.spacedBy(16.dp), // Spacing between cards
-        contentPadding = PaddingValues(horizontal = 16.dp), // Padding at start and end
+        contentPadding = PaddingValues(start = 16.dp, end = (configuration.screenWidthDp).dp), // Padding at start and end
     ) {
-        items(movies,key = {it.id}) { movie ->
-            MovieCardH(movie, onClick = {
+        itemsIndexed(movies,key = {_, item ->  item.id}) { index,movie ->
+            MovieCardH(index,movie, onClick = {
                 println("MovieCardH clicked:${movie.name}")
-                viewModel.currentShow.value = movie
+                onClick?.invoke(movie)
             })
         }
     }
 }
 
 @Composable
-fun MovieCardH(movie: Movie, onClick: () -> Unit = {}) {
+fun MovieCardH(index: Int, movie: Movie, onClick: () -> Unit = {}) {
     var hasFocus by remember { mutableStateOf(false) }
 
     Card(
@@ -65,7 +70,9 @@ fun MovieCardH(movie: Movie, onClick: () -> Unit = {}) {
                 color = if (hasFocus) Color.White else Color.Transparent
             )
             .aspectRatio(2.0f)
-            .onFocusChanged {
+             .onFocusChanged {
+                if(it.hasFocus){
+                }
                 hasFocus = it.hasFocus
             },
         shape = RoundedCornerShape(4.dp),
@@ -78,7 +85,7 @@ fun MovieCardH(movie: Movie, onClick: () -> Unit = {}) {
             contentDescription = null,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(if (hasFocus) 4.5.dp else 0.dp)
+                .padding(if (hasFocus) 3.5.dp else 0.dp)
                 .clip(RoundedCornerShape(4.dp))
         )
 //            if (movie.url.isNullOrEmpty()) {

@@ -79,10 +79,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Compose for TV dependencies.
-//    implementation("androidx.tv:tv-foundation:1.0.0-alpha12")
-//    implementation("androidx.tv:tv-material:1.1.0-alpha01")
-
     implementation("io.coil-kt.coil3:coil-compose:3.1.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
     implementation("com.google.accompanist:accompanist-pager:0.31.3-beta")

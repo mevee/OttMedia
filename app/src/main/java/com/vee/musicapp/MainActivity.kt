@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModelProvider
 import com.vee.musicapp.base.AppViewModelFactory
 import com.vee.musicapp.data.DataSource
@@ -24,14 +25,20 @@ class MainActivity : ComponentActivity() {
         viewModelSetup()
         setContent {
             MusicAppTheme {
-                HomeScreen(viewModel)
+                val uiState = viewModel.uiState.collectAsState()
+                HomeScreen(
+                    uiState,
+                    reloadHomeData = {
+                        viewModel.loadHomeData(reloadAfterError = true)
+                    },
+                )
             }
         }
     }
 
     private fun viewModelSetup() {
         movieRepository = MovieRepoImpl(DataSource())
-        val factory = AppViewModelFactory(movieRepository)
+        val factory = AppViewModelFactory(this.application, movieRepository)
         viewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
     }
 }

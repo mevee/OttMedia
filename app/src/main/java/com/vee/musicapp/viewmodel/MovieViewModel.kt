@@ -1,6 +1,6 @@
 package com.vee.musicapp.viewmodel
 
-import android.util.Log
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,11 +8,19 @@ import androidx.lifecycle.viewModelScope
 import com.vee.musicapp.data.models.Category
 import com.vee.musicapp.data.models.Movie
 import com.vee.musicapp.data.repo.MovieRepoImpl
+import com.vee.musicapp.modules.home.HomeState
+import com.vee.musicapp.util.isInternetAvailable
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+
 class MovieViewModel(
-    mRepo: MovieRepoImpl
+    private val context: Application,
+    mRepo: MovieRepoImpl,
 ) : ViewModel() {
     val tag = "MovieViewModel"
     private val repo: MovieRepoImpl = mRepo
@@ -20,20 +28,47 @@ class MovieViewModel(
     val viewPageData: LiveData<Category> = _pageData
     private val _homePageData = MutableLiveData<List<Category>>()
     val homePageLiveData: LiveData<List<Category>> = _homePageData
-
-    //    val movieList = MutableLiveData<List<Movie>>()
-    val isLoading = MutableLiveData<Boolean>(false)
+    private val _uiState =  MutableStateFlow<HomeState<List<Category>>>(HomeState.Loading)
+    val uiState: StateFlow<HomeState<List<Category>>> = _uiState.asStateFlow()
     val currentShow = MutableLiveData<Movie>()
-
-    private val _focusedIndex = MutableLiveData("")  // Track focused item index
-    val focusedIndex: LiveData<String> = _focusedIndex
-    fun updateFocus(id: String) {
-        _focusedIndex.value = id
-        Log.d(tag, "updateFocus")
-    }
 
     init {
         loadHomeData()
+    }
+
+    fun loadHomeData(reloadAfterError: Boolean=false) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _uiState.value = HomeState.Loading
+            delay(2000) // Simulate network delay
+            if (isInternetAvailable(context)) {
+                try {
+                    val response = repo.getHomePageData()
+                    if(!reloadAfterError)
+                    throw Exception("Json Malfunctioned")
+                    if (response.isSuccessful) {
+                        val data = response.body()
+                        if (!data.isNullOrEmpty()) {
+                            _uiState.value = HomeState.Success(data = data)
+//                            _homePageData.postValue(data!!)
+//                            if (data.isNotEmpty()) {
+//                                val movie = data.first()
+//                                _pageData.postValue(movie)
+//                            }else{
+//                            }
+                        } else {
+                            _uiState.value = HomeState.Error(message = "No Data available")
+
+                        }
+                    } else {
+                        _uiState.value = HomeState.Error(message = "")
+                    }
+                } catch (e: Exception) {
+                    _uiState.value = HomeState.Error(message = e.message.toString())
+                }
+            } else {
+                _uiState.value = HomeState.NetworkError;
+            }
+        }
     }
 
     private fun loadNewRail(lastIndex: Int) {
@@ -48,27 +83,6 @@ class MovieViewModel(
                         _homePageData.postValue(updatedList)
                     }
                 }
-            }
-        }
-    }
-
-    private fun loadHomeData() {
-        isLoading.value = true
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = repo.getHomePageData()
-            isLoading.postValue(false)
-            if (response.isSuccessful) {
-                val data = response.body()
-                if (!data.isNullOrEmpty()) {
-                    _homePageData.postValue(data!!)
-                    //extracting the first category from the list for banner
-                    if (data.isNotEmpty()) {
-                        val movie = data.first()
-                        _pageData.postValue(movie)
-                    }
-                }
-            } else {
-
             }
         }
     }
