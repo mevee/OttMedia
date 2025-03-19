@@ -1,12 +1,12 @@
 package com.vee.musicapp.data.repo
 
-import com.vee.musicapp.data.AppData
+import com.vee.musicapp.data.DataSource
 import com.vee.musicapp.data.models.Category
 import com.vee.musicapp.data.models.Movie
 import kotlinx.coroutines.delay
 import retrofit2.Response
 
-class MovieRepoImpl(private val dataSource: AppData) : MovieRepo {
+class MovieRepoImpl(private val dataSource: DataSource) : MovieRepo {
 
 
     override suspend fun getHomeData(): Response<List<Movie>> {

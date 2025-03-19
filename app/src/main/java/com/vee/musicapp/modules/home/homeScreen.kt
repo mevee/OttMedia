@@ -14,6 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -23,7 +25,7 @@ import com.vee.musicapp.data.models.Category
 import com.vee.musicapp.viewmodel.MovieViewModel
 
 @Composable
-fun HomeScreen(viewModel: MovieViewModel){
+fun HomeScreen(viewModel: MovieViewModel) {
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
@@ -52,34 +54,27 @@ fun HomeScreen(viewModel: MovieViewModel){
 @Composable
 fun bottomView(viewModel: MovieViewModel) {
     val items by viewModel.homePageLiveData.observeAsState(emptyList())
-    val focusId by viewModel.focusedIndex.observeAsState("")
-    val selectedShow by viewModel.currentShow.observeAsState()
-    val lazyListState = rememberLazyListState()
-
-    Box {
-        ProvideLazyListPivotOffset (){
-            LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-                state = lazyListState
-//            pivotOffsets = PivotOffsets(0.0f)
-        ) {
-            items(items) { item ->
-                Box {
-                    Column {
-                        Text(
-                            text = item.name,
-                            style = TextStyle(
-                                fontSize = 16.sp, fontWeight = FontWeight.Bold
-                            ),
-                            modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)
-                        )
-                        if (item.type == "H") HorizontalMovieList(item.movies, focusId, viewModel)
-                        if (item.type == "V") VerticalMovieList(item.movies, focusId)
-                        Box(Modifier.height(8.dp))
-                    }
+//    val lazyListState = rememberLazyListState()
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+//        state = lazyListState
+    ) {
+        items(items,key = {it.id}) { item ->
+            Box {
+                Column {
+                    Text(
+                        text = item.name, style = TextStyle(
+                            fontSize = 16.sp, fontWeight = FontWeight.Bold
+                        ), modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)
+                    )
+                    val nMovies = remember { mutableStateOf(item.movies) }
+                    if (item.type == "H") HorizontalMovieList(nMovies.value, viewModel)
+                    if (item.type == "V") VerticalMovieList(nMovies.value)
+                    Box(Modifier.height(8.dp))
                 }
             }
-        }}
+        }
+
 
 //        Box(
 //            modifier = Modifier.padding(start = 10.dp, top = 40.dp)
@@ -88,6 +83,5 @@ fun bottomView(viewModel: MovieViewModel) {
 //                selectedShow,
 //                isHorizontal = true
 //            )
-//        }
     }
 }

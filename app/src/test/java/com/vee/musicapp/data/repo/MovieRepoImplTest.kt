@@ -1,14 +1,11 @@
 package com.vee.musicapp.data.repo
 
-import coil3.network.NetworkRequest
-import com.vee.musicapp.data.AppData
+import com.vee.musicapp.data.DataSource
 import com.vee.musicapp.data.models.Category
 import com.vee.musicapp.data.models.Movie
 import kotlinx.coroutines.test.runTest
-import okhttp3.ResponseBody.Companion.toResponseBody
 
 import org.junit.After
-import org.junit.Assert
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -16,11 +13,10 @@ import org.junit.Before
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
-import retrofit2.Response
 
 class MovieRepoImplTest {
     @Mock
-    lateinit var dataSrc: AppData
+    lateinit var dataSrc: DataSource
 
     @Before
     fun setUp() {

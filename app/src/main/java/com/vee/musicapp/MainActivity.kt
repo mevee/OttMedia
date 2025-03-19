@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
 import com.vee.musicapp.base.AppViewModelFactory
-import com.vee.musicapp.data.AppData
+import com.vee.musicapp.data.DataSource
 import com.vee.musicapp.data.repo.MovieRepoImpl
 import com.vee.musicapp.modules.home.HomeScreen
 import com.vee.musicapp.ui.theme.MusicAppTheme
@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun viewModelSetup() {
-        movieRepository = MovieRepoImpl(AppData())
+        movieRepository = MovieRepoImpl(DataSource())
         val factory = AppViewModelFactory(movieRepository)
         viewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
     }

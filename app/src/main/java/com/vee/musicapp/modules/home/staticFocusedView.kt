@@ -49,8 +49,8 @@ fun StaticFocusedView(selectedShow: Movie?, isHorizontal: Boolean = true) {
                 position = layoutCoordinates.positionInRoot() // Get position relative to root
             }.focusable()// Makes it focusable but static
     ){
-        if(selectedShow!=null)
-            MovieCardV (  selectedShow) {}
+//        if(selectedShow!=null)
+//            MovieCardV (  selectedShow) {}
     }
     //check the coordinates of static view on mobile screen
 //    Text(
