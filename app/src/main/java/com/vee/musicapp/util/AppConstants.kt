@@ -1,7 +1,7 @@
 package com.vee.musicapp.util
 
 object AppConstants {
-    val logPref:String = "analytics_logs"
+    val alert:String = "Alert"
 
     val remoteSplashText:String = "splash_text"
     val remoteLock :String= "lock"

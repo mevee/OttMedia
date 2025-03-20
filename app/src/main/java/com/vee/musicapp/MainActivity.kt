@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
                 if (terminationState.value.lock && !showDialog) {
                     AlertDialog(
                         onDismissRequest = { viewModel.showDialog.value = false },
-                        title = { Text(text = AppConstants.aler) },
+                        title = { Text(text = AppConstants.alert) },
                         text = { Text(text = terminationState.value.message) },
                         confirmButton = {
                             Button(onClick = { viewModel.showDialog.value = false }) {
