@@ -42,6 +42,7 @@ fun HorizontalMovieList(
     Log.d("HorizontalMovieList", "movies: $movies")
     val configuration = LocalConfiguration.current
     LazyRow(
+        userScrollEnabled = true, // Still allows manual scrolling
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(Dimens.dp16), // Spacing between cards
@@ -50,7 +51,8 @@ fun HorizontalMovieList(
         ),
     ) {
         itemsIndexed(movies, key = { _, item -> item.id }) { index, movie ->
-            MovieCardH(index, movie, onClick = {
+            MovieCardH(index, movie,
+                onClick = {
                 println("MovieCardH clicked:${movie.name}")
                 onClick?.invoke(movie)
             },

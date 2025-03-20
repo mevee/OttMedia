@@ -37,7 +37,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".firebase.NetworkChangeReceiver"
+        <receiver android:name=".firebase.SyncOnNetworkChangeReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

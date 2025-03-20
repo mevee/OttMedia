@@ -97,14 +97,17 @@ fun BottomView(
                 )
                 val nMovies = remember { item.movies }
                 when (item.type) {
-                    "H" -> HorizontalMovieList(
-                        nMovies, onClick = onClick,
+                    "H" -> HorizontalMovieList(nMovies, onClick = onClick, onHovered = {
+                        onHovered?.invoke(item.id, it)
+                    })
+
+                    "V" -> VerticalMovieList(
+                        nMovies,
+                        onClick = onClick,
                         onHovered = {
                             onHovered?.invoke(item.id, it)
-                        }
+                        },
                     )
-
-                    "V" -> VerticalMovieList(nMovies)
                 }
                 Spacer(Modifier.height(Dimens.spaceBetweenItems))
             }

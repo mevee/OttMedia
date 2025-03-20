@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 
-class NetworkChangeReceiver : BroadcastReceiver() {
+class SyncOnNetworkChangeReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         if (ConnectivityManager.CONNECTIVITY_ACTION == intent?.action) {
             val analyticsHelper = FirebaseAnalyticsHelper(context)

@@ -9,6 +9,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.ViewModelProvider
 import com.vee.musicapp.base.AppViewModelFactory
 import com.vee.musicapp.data.DataSource
@@ -36,7 +37,9 @@ class MainActivity : ComponentActivity() {
                 if (terminationState.value.lock && !showDialog) {
                     AlertDialog(onDismissRequest = { viewModel.showDialog.value = false },
                         title = { Text(text = AppConstants.alert) },
-                        text = { Text(text = terminationState.value.message) },
+                        text = {
+                            Text(text = terminationState.value.message, textAlign = TextAlign.Center )
+                               },
                         confirmButton = {
                             Button(onClick = { viewModel.showDialog.value = false }) {
                                 Text("OK")

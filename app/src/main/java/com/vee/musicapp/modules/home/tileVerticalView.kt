@@ -43,7 +43,11 @@ import com.vee.musicapp.ui.theme.Dimens
 import com.vee.musicapp.util.AppConstants
 
 @Composable
-fun VerticalMovieList(movies: List<Movie>) {
+fun VerticalMovieList(
+    movies: List<Movie>,
+    onClick: ((Movie) -> Unit)? = null,
+    onHovered: ((Movie) -> Unit)? = null,
+) {
     Log.d("VerticalMovieList", "movies: $movies")
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
@@ -54,14 +58,21 @@ fun VerticalMovieList(movies: List<Movie>) {
         items(movies, key = { it.id }) { movie ->
             MovieCardV(
                 movie,
-                onClick = {},
+                onClick = {
+                    println("MovieCardV clicked:${movie.name}")
+                    onClick?.invoke(movie)
+                },
+                onFocus = {
+                    onHovered?.invoke(movie)
+                }
             )
         }
     }
 }
 
 @Composable
-fun MovieCardV(movie: Movie, onClick: () -> Unit) {
+fun MovieCardV(movie: Movie, onClick: () -> Unit,
+               onFocus: (() -> Unit)? = null) {
     var hasFocus by remember { mutableStateOf(false) }
     Card(
         modifier = Modifier
@@ -73,6 +84,8 @@ fun MovieCardV(movie: Movie, onClick: () -> Unit) {
             )
             .aspectRatio(.66f)
             .onFocusChanged {
+                onFocus?.invoke()
+
                 hasFocus = it.hasFocus
             },
         shape = RoundedCornerShape(Dimens.dp4),
