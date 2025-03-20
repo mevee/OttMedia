@@ -3,17 +3,23 @@ package com.vee.musicapp.firebase
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.vee.musicapp.pref.PrefConstants
 import com.vee.musicapp.util.AppConstants
 import org.json.JSONObject
 
 class FirebaseAnalyticsHelper(private val context: Context) {
-
+    private val TAG = "FirebaseAnalyticsHelper"
     private val analytics = Firebase.analytics
-    private val sharedPrefs = context.getSharedPreferences(AppConstants.logPref, Context.MODE_PRIVATE)
+    private val sharedPrefs =
+        context.getSharedPreferences(PrefConstants.logPrefKey, Context.MODE_PRIVATE)
 
     fun logEvent(eventName: String, params: Bundle? = null) {
+        Log.d(TAG, "eventName$eventName::params${params.toString()}")
+        Log.d(TAG, "isNetworkAvailable()${isNetworkAvailable()}")
         if (isNetworkAvailable()) {
             // 🔹 Log directly if network is available
             analytics.logEvent(eventName, params ?: Bundle())
@@ -24,7 +30,8 @@ class FirebaseAnalyticsHelper(private val context: Context) {
     }
 
     private fun isNetworkAvailable(): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = connectivityManager.activeNetwork
         return activeNetwork != null
     }
@@ -33,7 +40,7 @@ class FirebaseAnalyticsHelper(private val context: Context) {
         val logs = sharedPrefs.getStringSet("pending_logs", mutableSetOf())!!.toMutableSet()
         val eventJson = JSONObject().apply {
             put("eventName", eventName)
-            params?.let { 
+            params?.let {
                 val jsonParams = JSONObject()
                 for (key in it.keySet()) {
                     jsonParams.put(key, it.get(key))

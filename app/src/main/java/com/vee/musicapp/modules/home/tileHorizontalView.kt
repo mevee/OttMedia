@@ -34,29 +34,36 @@ import com.vee.musicapp.util.AppConstants
 
 
 @Composable
-fun HorizontalMovieList(movies: List<Movie>, onClick: ((Movie) -> Unit)? = null) {
+fun HorizontalMovieList(
+    movies: List<Movie>,
+    onClick: ((Movie) -> Unit)? = null,
+    onHovered: ((Movie) -> Unit)? = null,
+) {
     Log.d("HorizontalMovieList", "movies: $movies")
     val configuration = LocalConfiguration.current
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-//          horizontalArrangement = Arrangement.Start,
         horizontalArrangement = Arrangement.spacedBy(Dimens.dp16), // Spacing between cards
         contentPadding = PaddingValues(
             start = Dimens.dp16, end = (configuration.screenWidthDp).dp
-        ), // Padding at start and end
+        ),
     ) {
         itemsIndexed(movies, key = { _, item -> item.id }) { index, movie ->
             MovieCardH(index, movie, onClick = {
                 println("MovieCardH clicked:${movie.name}")
                 onClick?.invoke(movie)
-            })
+            },
+                onFocus = {
+                    onHovered?.invoke(movie)
+                }
+            )
         }
     }
 }
 
 @Composable
-fun MovieCardH(index: Int, movie: Movie, onClick: () -> Unit = {}) {
+fun MovieCardH(index: Int, movie: Movie, onClick: () -> Unit = {}, onFocus: (() -> Unit)? = null) {
     var hasFocus by remember { mutableStateOf(false) }
 
     Card(
@@ -70,6 +77,7 @@ fun MovieCardH(index: Int, movie: Movie, onClick: () -> Unit = {}) {
             .aspectRatio(2.0f)
             .onFocusChanged {
                 if (it.hasFocus) {
+                    onFocus?.invoke()
                 }
                 hasFocus = it.hasFocus
             },

@@ -10,10 +10,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.vee.musicapp.data.models.Category
+import com.vee.musicapp.data.models.Movie
 import com.vee.musicapp.ui.theme.Dimens
 
 @Composable
-fun HomeScreen(uiState: State<HomeState<List<Category>>>, reloadHomeData: () -> Unit) {
+fun HomeScreen(
+    uiState: State<HomeState<List<Category>>>,
+    reloadHomeData: () -> Unit,
+    onItemClicked: (Movie) -> Unit,
+    onItemScrolled: (railId: String, Movie) -> Unit,
+) {
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         when (uiState.value) {
             is HomeState.Loading -> {
@@ -27,7 +33,6 @@ fun HomeScreen(uiState: State<HomeState<List<Category>>>, reloadHomeData: () -> 
             is HomeState.Success -> {
                 val data = (uiState.value as HomeState.Success).data
                 val pageData = data.first()
-
                 Column(
                     modifier = Modifier.fillMaxSize()
                 ) {
@@ -35,7 +40,11 @@ fun HomeScreen(uiState: State<HomeState<List<Category>>>, reloadHomeData: () -> 
                         HorizontalPageView(pageData)
                     }
                     Box(modifier = Modifier.weight(1f)) {
-                        BottomView(data)
+                        BottomView(
+                            data,
+                            onClick = onItemClicked,
+                            onHovered = onItemScrolled,
+                        )
                     }
                 }
             }
@@ -65,15 +74,20 @@ fun HomeScreen(uiState: State<HomeState<List<Category>>>, reloadHomeData: () -> 
 }
 
 @Composable
-fun BottomView(items: List<Category>) {
+fun BottomView(
+    items: List<Category>,
+    onClick: ((Movie) -> Unit)? = null,
+    onHovered: ((railId: String, Movie) -> Unit)? = null,
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = Dimens.bottomPadding),
-    ) {
+
+        ) {
         items(items, key = { it.id }) { item ->
             Column {
                 Text(
-                    text = "Headline Large",
+                    text = item.name,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(
                         start = Dimens.textPaddingStart,
@@ -83,7 +97,13 @@ fun BottomView(items: List<Category>) {
                 )
                 val nMovies = remember { item.movies }
                 when (item.type) {
-                    "H" -> HorizontalMovieList(nMovies)
+                    "H" -> HorizontalMovieList(
+                        nMovies, onClick = onClick,
+                        onHovered = {
+                            onHovered?.invoke(item.id, it)
+                        }
+                    )
+
                     "V" -> VerticalMovieList(nMovies)
                 }
                 Spacer(Modifier.height(Dimens.spaceBetweenItems))

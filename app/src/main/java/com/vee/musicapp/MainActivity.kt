@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.vee.musicapp.base.AppViewModelFactory
 import com.vee.musicapp.data.DataSource
 import com.vee.musicapp.data.repo.MovieRepoImpl
-import com.vee.musicapp.modules.home.HomeScreen
 import com.vee.musicapp.nivigation.Navigation
 import com.vee.musicapp.ui.theme.MusicAppTheme
 import com.vee.musicapp.util.AppConstants
@@ -35,16 +34,14 @@ class MainActivity : ComponentActivity() {
                 val showDialog by viewModel.showDialog
                 Navigation(viewModel)
                 if (terminationState.value.lock && !showDialog) {
-                    AlertDialog(
-                        onDismissRequest = { viewModel.showDialog.value = false },
+                    AlertDialog(onDismissRequest = { viewModel.showDialog.value = false },
                         title = { Text(text = AppConstants.alert) },
                         text = { Text(text = terminationState.value.message) },
                         confirmButton = {
                             Button(onClick = { viewModel.showDialog.value = false }) {
                                 Text("OK")
                             }
-                        }
-                    )
+                        })
                 }
             }
         }

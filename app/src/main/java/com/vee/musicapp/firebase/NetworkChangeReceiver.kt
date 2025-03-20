@@ -7,9 +7,9 @@ import android.net.ConnectivityManager
 
 class NetworkChangeReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
-//        if (ConnectivityManager.CONNECTIVITY_ACTION == intent?.action) {
-//            val analyticsHelper = FirebaseAnalyticsHelper(context)
-//            analyticsHelper.syncOfflineLogs()
-//        }
+        if (ConnectivityManager.CONNECTIVITY_ACTION == intent?.action) {
+            val analyticsHelper = FirebaseAnalyticsHelper(context)
+            analyticsHelper.syncOfflineLogs()
+        }
     }
 }
