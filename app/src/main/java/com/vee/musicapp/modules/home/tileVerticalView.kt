@@ -39,24 +39,23 @@ import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Text
 import coil3.compose.AsyncImage
 import com.vee.musicapp.data.models.Movie
+import com.vee.musicapp.ui.theme.Dimens
 import com.vee.musicapp.util.AppConstants
-
 
 @Composable
 fun VerticalMovieList(movies: List<Movie>) {
     Log.d("VerticalMovieList", "movies: $movies")
-//    val nMovies = remember { mutableStateOf(movies) }
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp), // Spacing between cards
-        contentPadding = PaddingValues(horizontal = 16.dp) // Padding at start and end
+        horizontalArrangement = Arrangement.spacedBy(Dimens.dp16), // Spacing between cards
+        contentPadding = PaddingValues(horizontal = Dimens.dp16) // Padding at start and end
     ) {
-        items(movies,key = {it.id}) { movie ->
+        items(movies, key = { it.id }) { movie ->
             MovieCardV(
                 movie,
                 onClick = {},
-                )
+            )
         }
     }
 }
@@ -66,44 +65,29 @@ fun MovieCardV(movie: Movie, onClick: () -> Unit) {
     var hasFocus by remember { mutableStateOf(false) }
     Card(
         modifier = Modifier
-            .width(if (hasFocus) 124.dp else 120.dp)
+            .width(if (hasFocus) Dimens.vCardHeightFocus else Dimens.vCardHeight)
             .border(
-                width = if (hasFocus) 3.dp else 0.dp,
-                shape = RoundedCornerShape(4.dp),
+                width = if (hasFocus) Dimens.dp3 else Dimens.zero,
+                shape = RoundedCornerShape(Dimens.dp4),
                 color = if (hasFocus) Color.White else Color.Transparent
             )
             .aspectRatio(.66f)
             .onFocusChanged {
-                hasFocus= it.hasFocus
+                hasFocus = it.hasFocus
             },
-        shape = RoundedCornerShape(4.dp),
-        elevation = CardDefaults.elevatedCardElevation(4.dp),
+        shape = RoundedCornerShape(Dimens.dp4),
+        elevation = CardDefaults.elevatedCardElevation(Dimens.dp4),
         onClick = onClick
     ) {
-            AsyncImage(
-                model = if (movie.url.isNullOrEmpty()) AppConstants.noUrlLink else movie.url,
-                contentScale = ContentScale.Crop,
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(if (hasFocus) 4.5.dp else 0.dp)
-                    .clip(RoundedCornerShape(4.dp))
-            )
-////            if (movie.url.isNullOrEmpty())
-//                Box(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .background(color = Color.Black.copy(alpha = 0.7f))
-//            )
-//            if (movie.url.isNullOrEmpty())
-//            Text(
-//                text = movie.name, textAlign = TextAlign.Center, style = TextStyle(
-//                    textAlign = TextAlign.Center,
-//                    fontSize = 16.sp,
-//                    fontWeight = FontWeight.Bold,
-//                    color = Color.White
-//                ), modifier = Modifier.padding(6.dp)
-//            )
+        AsyncImage(
+            model = if (movie.url.isNullOrEmpty()) AppConstants.noUrlLink else movie.url,
+            contentScale = ContentScale.Crop,
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(if (hasFocus) Dimens.dp4d5 else Dimens.zero)
+                .clip(RoundedCornerShape(Dimens.dp4))
+        )
 
     }
 

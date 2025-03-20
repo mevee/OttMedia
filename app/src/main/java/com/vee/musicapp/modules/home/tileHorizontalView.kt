@@ -2,7 +2,6 @@ package com.vee.musicapp.modules.home
 
 import android.util.Log
 import androidx.compose.foundation.border
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
@@ -23,8 +22,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -32,24 +29,25 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.vee.musicapp.data.models.Movie
+import com.vee.musicapp.ui.theme.Dimens
 import com.vee.musicapp.util.AppConstants
-import com.vee.musicapp.viewmodel.MovieViewModel
 
 
 @Composable
-fun HorizontalMovieList(movies: List<Movie>,onClick: ((Movie) -> Unit)?=null) {
+fun HorizontalMovieList(movies: List<Movie>, onClick: ((Movie) -> Unit)? = null) {
     Log.d("HorizontalMovieList", "movies: $movies")
     val configuration = LocalConfiguration.current
-//    val bringIntoViewRequester = remember { BringIntoViewRequester() }
-      LazyRow(
+    LazyRow(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
 //          horizontalArrangement = Arrangement.Start,
-        horizontalArrangement = Arrangement.spacedBy(16.dp), // Spacing between cards
-        contentPadding = PaddingValues(start = 16.dp, end = (configuration.screenWidthDp).dp), // Padding at start and end
+        horizontalArrangement = Arrangement.spacedBy(Dimens.dp16), // Spacing between cards
+        contentPadding = PaddingValues(
+            start = Dimens.dp16, end = (configuration.screenWidthDp).dp
+        ), // Padding at start and end
     ) {
-        itemsIndexed(movies,key = {_, item ->  item.id}) { index,movie ->
-            MovieCardH(index,movie, onClick = {
+        itemsIndexed(movies, key = { _, item -> item.id }) { index, movie ->
+            MovieCardH(index, movie, onClick = {
                 println("MovieCardH clicked:${movie.name}")
                 onClick?.invoke(movie)
             })
@@ -63,20 +61,20 @@ fun MovieCardH(index: Int, movie: Movie, onClick: () -> Unit = {}) {
 
     Card(
         modifier = Modifier
-            .height(if (hasFocus) 106.dp else 100.dp)
+            .height(if (hasFocus) Dimens.hCardHeightFocus else Dimens.hCardHeight)
             .border(
-                width = if (hasFocus) 2.dp else 0.dp,
-                shape = RoundedCornerShape(5.dp),
+                width = if (hasFocus) Dimens.dp2 else Dimens.zero,
+                shape = RoundedCornerShape(Dimens.dp6),
                 color = if (hasFocus) Color.White else Color.Transparent
             )
             .aspectRatio(2.0f)
-             .onFocusChanged {
-                if(it.hasFocus){
+            .onFocusChanged {
+                if (it.hasFocus) {
                 }
                 hasFocus = it.hasFocus
             },
-        shape = RoundedCornerShape(4.dp),
-        elevation = CardDefaults.elevatedCardElevation(4.dp),
+        shape = RoundedCornerShape(Dimens.dp4),
+        elevation = CardDefaults.elevatedCardElevation(Dimens.dp4),
         onClick = onClick
     ) {
         AsyncImage(
@@ -85,8 +83,8 @@ fun MovieCardH(index: Int, movie: Movie, onClick: () -> Unit = {}) {
             contentDescription = null,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(if (hasFocus) 3.5.dp else 0.dp)
-                .clip(RoundedCornerShape(4.dp))
+                .padding(if (hasFocus) Dimens.dp3 else Dimens.zero)
+                .clip(RoundedCornerShape(Dimens.dp4))
         )
 //            if (movie.url.isNullOrEmpty()) {
 //                Box(
@@ -100,7 +98,7 @@ fun MovieCardH(index: Int, movie: Movie, onClick: () -> Unit = {}) {
 //                        fontSize = 16.sp,
 //                        fontWeight = FontWeight.Bold,
 //                        color = Color.White
-//                    ), modifier = Modifier.padding(6.dp)
+//                    ), modifier = Modifier.padding(Dimens.dp6)
 //                )
 //            }
     }
