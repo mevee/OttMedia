@@ -9,6 +9,6 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         FirebaseApp.initializeApp(this)
-        Firebase.analytics.setAnalyticsCollectionEnabled(true) // Explicitly enable analytics
+        Firebase.analytics.setAnalyticsCollectionEnabled(true)
     }
 }

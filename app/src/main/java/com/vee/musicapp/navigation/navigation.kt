@@ -1,4 +1,4 @@
-package com.vee.musicapp.nivigation
+package com.vee.musicapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -16,8 +16,8 @@ import com.vee.musicapp.viewmodel.SplashViewModel
 @Composable
 fun Navigation(homeViewModel: MovieViewModel) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.Splash.routeNane) {
-        composable(route = Screen.Home.routeNane) {
+    NavHost(navController = navController, startDestination = Routes.Splash.routeNane) {
+        composable(route = Routes.Home.routeNane) {
             val uiState = homeViewModel.uiState.collectAsState()
             HomeScreen(
                 uiState,
@@ -25,6 +25,7 @@ fun Navigation(homeViewModel: MovieViewModel) {
                     homeViewModel.loadHomeData(reloadAfterError = true)
                 },
                 onItemClicked = {
+//                    throw RuntimeException("Test Crash") // this line will trig crash and it will be reported in crashlytics
                     homeViewModel.logData(LogEventType.MovieClicked, data = it, "")
                 },
                 onItemScrolled = { railId, movie ->
@@ -32,7 +33,7 @@ fun Navigation(homeViewModel: MovieViewModel) {
                 },
             )
         }
-        composable(route = Screen.Splash.routeNane) {
+        composable(route = Routes.Splash.routeNane) {
             val detailsViewModel: SplashViewModel = viewModel()
             val splashText = detailsViewModel.splashText.collectAsState()
             SplashScreen(navController = navController, splashText.value)

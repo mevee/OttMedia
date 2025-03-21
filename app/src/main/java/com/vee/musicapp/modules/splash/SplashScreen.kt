@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import androidx.tv.material3.Text
-import com.vee.musicapp.nivigation.Screen
+import com.vee.musicapp.navigation.Routes
 import com.vee.musicapp.ui.theme.Dimens
 import kotlinx.coroutines.delay
 
@@ -23,8 +23,8 @@ import kotlinx.coroutines.delay
 fun SplashScreen(navController: NavController,message:String) {
     LaunchedEffect(Unit) {
         delay(1500)
-        navController.navigate(Screen.Home.routeNane) {
-            popUpTo(Screen.Splash.routeNane) { inclusive = true }
+        navController.navigate(Routes.Home.routeNane) {
+            popUpTo(Routes.Splash.routeNane) { inclusive = true }
         }
     }
 

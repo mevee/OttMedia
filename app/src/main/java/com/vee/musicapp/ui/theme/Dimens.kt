@@ -36,6 +36,8 @@ object Dimens {
     val hCardHeightFocus = 106.dp
     val vCardHeight = 120.dp
     val vCardHeightFocus = 124.dp
+    val dp200 = 200.dp
+    val dp100 = 100.dp
 
 
 

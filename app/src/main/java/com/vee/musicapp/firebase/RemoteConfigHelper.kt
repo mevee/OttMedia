@@ -10,7 +10,6 @@ import kotlinx.coroutines.tasks.await
 import org.json.JSONObject
 
 class RemoteConfigHelper {
-
     private val remoteConfig: FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
     private val configSettings: FirebaseRemoteConfigSettings = remoteConfigSettings {
         minimumFetchIntervalInSeconds = 0 // Fetch new values immediately (for debugging)

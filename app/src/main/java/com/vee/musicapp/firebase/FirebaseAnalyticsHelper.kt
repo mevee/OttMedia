@@ -6,16 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
-import com.vee.musicapp.pref.PrefConstants
-import com.vee.musicapp.util.AppConstants
+import com.vee.musicapp.pref.AppPref
 import org.json.JSONObject
 
 class FirebaseAnalyticsHelper(private val context: Context) {
     private val TAG = "FirebaseAnalyticsHelper"
     private val analytics = Firebase.analytics
-    private val sharedPrefs =
-        context.getSharedPreferences(PrefConstants.logPrefKey, Context.MODE_PRIVATE)
+    private val localStorage = AppPref(context)
 
     fun logEvent(eventName: String, params: Bundle? = null) {
         Log.d(TAG, "eventName$eventName::params${params.toString()}")
@@ -37,24 +34,12 @@ class FirebaseAnalyticsHelper(private val context: Context) {
     }
 
     private fun saveEventOffline(eventName: String, params: Bundle?) {
-        val logs = sharedPrefs.getStringSet("pending_logs", mutableSetOf())!!.toMutableSet()
-        val eventJson = JSONObject().apply {
-            put("eventName", eventName)
-            params?.let {
-                val jsonParams = JSONObject()
-                for (key in it.keySet()) {
-                    jsonParams.put(key, it.get(key))
-                }
-                put("params", jsonParams)
-            }
-        }
-        logs.add(eventJson.toString())
-        sharedPrefs.edit().putStringSet("pending_logs", logs).apply()
+        localStorage.saveEventOffline(eventName, params)
     }
 
     fun syncOfflineLogs() {
         if (isNetworkAvailable()) {
-            val logs = sharedPrefs.getStringSet("pending_logs", emptySet())!!.toMutableSet()
+            val logs = localStorage.getSavedLog()
             logs.forEach { log ->
                 val json = JSONObject(log)
                 val eventName = json.getString("eventName")
@@ -68,7 +53,7 @@ class FirebaseAnalyticsHelper(private val context: Context) {
                 }
                 analytics.logEvent(eventName, params)
             }
-            sharedPrefs.edit().remove("pending_logs").apply()
+            localStorage.clearOfflineLogs()
         }
     }
 }
