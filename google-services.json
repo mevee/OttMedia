@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "837626376392",
+    "project_id": "musicapp-272dc",
+    "storage_bucket": "musicapp-272dc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:837626376392:android:54dc2c276658a8efbef5fd",
+        "android_client_info": {
+          "package_name": "com.vee.musicapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpJOgX0ZnDMwhQQr9LuabAPwjWSNFTM2g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
