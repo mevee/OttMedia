@@ -172,18 +172,18 @@ class DataSource {
                 url = "https://m.media-amazon.com/images/I/71sNQzzr3aS.jpg"
             ),
             Movie(
-                name = "Grey",
-                subTitle = "White lilly",
+                name = "Avenger End Game",
+                subTitle = "Avenger End Game",
                 url = "https://rukminim2.flixcart.com/image/850/1000/kavefm80/poster/w/x/z/medium-the-marvel-avengers-wall-poster-for-room-with-gloss-original-imafsckr6vt3wjjv.jpeg?q=90&crop=false"
             ),
             Movie(
-                name = "Sniper",
-                subTitle = "White lilly",
+                name = "Mickey",
+                subTitle = "Mickey",
                 url = "https://www.themoviedb.org/t/p/w1280/lrCcovGRcuv8Z1v3ae1ZH5Ird05.jpg"
             ),
             Movie(
-                name = "Snow",
-                subTitle = "White lilly",
+                name = "Cartoon Network",
+                subTitle = "Cartoon Network",
                 url = "https://www.themoviedb.org/t/p/w1280/iqQw58Cbgh5r7XRYUZpJPDPQD0m.jpg"
             ),
             Movie(
@@ -200,18 +200,18 @@ class DataSource {
                 url = "https://www.themoviedb.org/t/p/w1280/2hTPkBiXoMmrdtYgHtB9WU5dg80.jpg"
             ),
             Movie(
-                name = "No Country for old man",
-                subTitle = "White lilly",
+                name = "Mocking G",
+                subTitle = "Mocking G",
                 url = "https://www.themoviedb.org/t/p/w1280/cGm2qnmXx9tFabmzEIkJZjCJdQd.jpg"
             ),
             Movie(
-                name = "Snow Worlf",
-                subTitle = "White lilly",
+                name = "The Substance",
+                subTitle = "The Substance",
                 url = "https://www.themoviedb.org/t/p/w1280/vGXptEdgZIhPg3cGlc7e8sNPC2e.jpg"
             ),
             Movie(
-                name = "No Country for old man",
-                subTitle = "White lilly",
+                name = "The Venom",
+                subTitle = "The Last Dance",
                 url = "https://www.themoviedb.org/t/p/w1280/wWba3TaojhK7NdycRhoQpsG0FaH.jpg"
             ),
             Movie(
@@ -220,8 +220,8 @@ class DataSource {
                 url = "https://www.themoviedb.org/t/p/w1280/2hTPkBiXoMmrdtYgHtB9WU5dg80.jpg"
             ),
             Movie(
-                name = "No Country for old man",
-                subTitle = "White lilly",
+                name = "The Substance Again",
+                subTitle = "The Substance Again",
                 url = "https://www.themoviedb.org/t/p/w1280/cGm2qnmXx9tFabmzEIkJZjCJdQd.jpg"
             ),
         )

@@ -66,17 +66,26 @@ fun HorizontalPageList(pages: List<Movie>) {
                         drawRect(brush)
                     }) {
                 Column(
-                    modifier = Modifier.padding(20.dp).width(300.dp)
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .width(300.dp)
                 ) {
                     Text(
                         text = featuredMovie.name, style = MaterialTheme.typography.displaySmall
                     )
                     Text(
-                        text = featuredMovie.subTitle, style = MaterialTheme.typography.bodySmall.copy(fontSize = 18.sp, color = Color.Gray)
+                        text = featuredMovie.subTitle,
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            fontSize = 18.sp,
+                            color = Color.Gray
+                        )
                     )
                     Spacer(modifier = Modifier.height(28.dp))
                     androidx.tv.material3.Button(onClick = { /*onMovieSelected(featuredMovie)*/ }) {
-                        androidx.tv.material3.Text(text = "Show Details")
+                        androidx.tv.material3.Text(
+                            text = "Show Details",
+                            style = androidx.compose.material3.MaterialTheme.typography.titleSmall,
+                        )
                     }
                 }
             }

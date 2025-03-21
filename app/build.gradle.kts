@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 android {
@@ -69,6 +71,10 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.config.ktx)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.firebase.crashlytics)
     testImplementation(libs.junit)
     testImplementation(libs.junit.junit)
     testImplementation(libs.junit.jupiter)
