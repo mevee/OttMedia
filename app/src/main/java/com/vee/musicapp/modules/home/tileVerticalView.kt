@@ -47,18 +47,17 @@ fun MovieCardV(movie: Movie, onFocusChange: (Boolean) -> Unit) {
     Box(
         modifier = Modifier
             .width(120.dp)
-            .height(200.dp)
-            .focusable()
-            .focusTarget()
-            .onFocusChanged { focusState ->
-                onFocusChange(focusState.isFocused)
-                Log.d("MovieCardV", "${movie.id}isFocused${focusState.isFocused}")
-            },
+            .height(200.dp),
     ) {
         Card(
             modifier = Modifier
                 .fillMaxSize()
-                .aspectRatio(.66f),
+                .aspectRatio(.66f)
+                .focusTarget()
+                .onFocusChanged { focusState ->
+                    onFocusChange(focusState.isFocused)
+                    Log.d("MovieCardV", "${movie.id}isFocused${focusState.isFocused}")
+                }.focusable(),
             shape = RoundedCornerShape(6.dp),
             elevation = CardDefaults.elevatedCardElevation(4.dp)
         ) {

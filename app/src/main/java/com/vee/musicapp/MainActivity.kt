@@ -9,6 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
 import com.vee.musicapp.modules.home.HomeScreen
+import com.vee.musicapp.modules.immersive.MyImmersiveApp
 import com.vee.musicapp.ui.theme.MusicAppTheme
 import com.vee.musicapp.viewmodel.MovieViewModel
 

@@ -29,10 +29,9 @@ fun StaticFocusedView(selectedShow: Movie?, isHorizontal: Boolean = true) {
             .background(Color.Transparent)
             .aspectRatio(2.0f)
             .border(3.dp, Color.White, shape = RoundedCornerShape(8.dp))
-            .focusable()
             .onGloballyPositioned { layoutCoordinates ->
                 position = layoutCoordinates.positionInRoot() // Get position relative to root
-            }// Makes it focusable but static
+            }.focusable()// Makes it focusable but static
     ){
         if(selectedShow!=null)
         MovieCardH(  selectedShow,"") {}
@@ -43,10 +42,9 @@ fun StaticFocusedView(selectedShow: Movie?, isHorizontal: Boolean = true) {
             .background(Color.Transparent)
             .aspectRatio(.66f)
             .border(3.dp, Color.White, shape = RoundedCornerShape(8.dp))
-            .focusable()
             .onGloballyPositioned { layoutCoordinates ->
                 position = layoutCoordinates.positionInRoot() // Get position relative to root
-            }// Makes it focusable but static
+            }.focusable()// Makes it focusable but static
     ){
         if(selectedShow!=null)
             MovieCardV (  selectedShow) {}

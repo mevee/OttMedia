@@ -1,5 +1,6 @@
 package com.vee.musicapp.modules.home
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +23,6 @@ import androidx.compose.ui.unit.sp
 import com.vee.musicapp.data.models.Category
 import com.vee.musicapp.viewmodel.MovieViewModel
 
-
 @Composable
 fun HomeScreen(viewModel: MovieViewModel){
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -33,12 +34,8 @@ fun HomeScreen(viewModel: MovieViewModel){
                     modifier = Modifier.weight(.8f)
                 ) {
                     val pageData by viewModel.viewPageData.observeAsState(
-                        Category(
-                            name = "", type = "H", movies = emptyList()
-                        )
+                        Category(name = "", type = "H", movies = emptyList())
                     )
-//                                ViewPagerScreen(pageData)
-
                     HorizontalPageView(pageData)
                 }
                 Box(
@@ -58,10 +55,14 @@ fun bottomView(viewModel: MovieViewModel) {
     val items by viewModel.homePageLiveData.observeAsState(emptyList())
     val focusId by viewModel.focusedIndex.observeAsState("")
     val selectedShow by viewModel.currentShow.observeAsState()
+    val lazyListState = rememberLazyListState()
 
     Box {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
+        ProvideLazyListPivotOffset (){
+            LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+                state = lazyListState
+//            pivotOffsets = PivotOffsets(0.0f)
         ) {
             items(items) { item ->
                 Box {
@@ -77,19 +78,17 @@ fun bottomView(viewModel: MovieViewModel) {
                         if (item.type == "V") VerticalMovieList(item.movies, focusId)
                         Box(Modifier.height(8.dp))
                     }
-//                    Box(
-//                        modifier = Modifier.padding(start = 8.dp, top = 24.dp)
-//                    ) { StaticFocusedView(isHorizontal = item.type=="H") }
                 }
             }
-        }
-        Box(
-            modifier = Modifier.padding(start = 10.dp, top = 40.dp)
-        ) {
-            StaticFocusedView(
-                selectedShow,
-                isHorizontal = true
-            )
-        }
+        }}
+
+//        Box(
+//            modifier = Modifier.padding(start = 10.dp, top = 40.dp)
+//        ) {
+//            StaticFocusedView(
+//                selectedShow,
+//                isHorizontal = true
+//            )
+//        }
     }
 }
