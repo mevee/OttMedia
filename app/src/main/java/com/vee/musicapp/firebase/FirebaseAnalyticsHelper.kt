@@ -38,6 +38,8 @@ class FirebaseAnalyticsHelper(private val context: Context) {
     }
 
     fun syncOfflineLogs() {
+        Log.d(TAG, "syncOfflineLogs()")
+
         if (isNetworkAvailable()) {
             val logs = localStorage.getSavedLog()
             logs.forEach { log ->
