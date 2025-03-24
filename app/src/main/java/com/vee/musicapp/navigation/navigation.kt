@@ -24,9 +24,9 @@ fun Navigation(homeViewModel: MovieViewModel) {
                 reloadHomeData = {
                     homeViewModel.loadHomeData(reloadAfterError = true)
                 },
-                onItemClicked = {
+                onItemClicked = {railId, movie ->
 //                    throw RuntimeException("Test Crash") // this line will trig crash and it will be reported in crashlytics
-                    homeViewModel.logData(LogEventType.MovieClicked, data = it, "")
+                    homeViewModel.logData(LogEventType.MovieCardVisited, data = movie, railId)
                 },
                 onItemScrolled = { railId, movie ->
                     homeViewModel.logData(LogEventType.MovieCardVisited, data = movie, railId)

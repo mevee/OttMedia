@@ -52,8 +52,12 @@ firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics
 firebase-config-ktx = { group = "com.google.firebase", name = "firebase-config-ktx", version.ref = "firebaseConfigKtx" }
 androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workRuntimeKtx" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlytics" }
+
 androidx-room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
+#androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
+androidx-room = { group = "androidx.room:room-testing", name = "room-testing", version.ref = "roomCommon" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

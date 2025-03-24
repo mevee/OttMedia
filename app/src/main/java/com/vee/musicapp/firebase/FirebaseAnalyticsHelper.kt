@@ -6,13 +6,17 @@ import android.os.Bundle
 import android.util.Log
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
-import com.vee.musicapp.pref.AppPref
-import org.json.JSONObject
+import com.vee.musicapp.data.local.dao.LogsDao
+import com.vee.musicapp.data.local.db.LogDatabase
+import com.vee.musicapp.data.local.models.LogItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class FirebaseAnalyticsHelper(private val context: Context) {
+class FirebaseAnalyticsHelper(private val context: Context, private val localStorage: LogsDao) {
     private val TAG = "FirebaseAnalyticsHelper"
     private val analytics = Firebase.analytics
-    private val localStorage = AppPref(context)
+//    private val localStorage = LogDatabase.getDatabase(context).logDao()
 
     fun logEvent(eventName: String, params: Bundle? = null) {
         Log.d(TAG, "eventName$eventName::params${params.toString()}")
@@ -34,26 +38,37 @@ class FirebaseAnalyticsHelper(private val context: Context) {
     }
 
     private fun saveEventOffline(eventName: String, params: Bundle?) {
-        localStorage.saveEventOffline(eventName, params)
+        CoroutineScope(Dispatchers.IO).launch {
+            val mainKey = (params?.getString("railId") ?: "") + (params?.getString("movieId") ?: "")
+            val logItem = LogItem(
+                mainKey = mainKey,
+                railId = params?.getString("railId") ?: "",
+                movieId = params?.getString("movieId") ?: "",
+                eventName = eventName,
+                movieName = params?.getString("movieName") ?: "",
+                extra = params?.getString("extra") ?: ""
+            )
+            localStorage.insertItem(logItem)
+        }
     }
 
     fun syncOfflineLogs() {
         if (isNetworkAvailable()) {
-            val logs = localStorage.getSavedLog()
-            logs.forEach { log ->
-                val json = JSONObject(log)
-                val eventName = json.getString("eventName")
-                val paramsJson = json.optJSONObject("params")
-                val params = Bundle().apply {
-                    paramsJson?.let {
-                        for (key in it.keys()) {
-                            putString(key, it.getString(key))
-                        }
+            CoroutineScope(Dispatchers.IO).launch {
+                val logs = localStorage.getAllLogs()
+                logs.forEach { log ->
+                    val eventName = log.eventName
+                    val params = Bundle()
+                    params.putString("railId", log.railId)
+                    params.putString("movieId", log.movieId)
+                    params.putString("movieName", log.movieName)
+                    if (!log.extra.isNullOrEmpty()) {
+                        params.putString("extra", log.extra)
                     }
+                    analytics.logEvent(eventName, params)
+                    localStorage.deleteItems(log)
                 }
-                analytics.logEvent(eventName, params)
             }
-            localStorage.clearOfflineLogs()
         }
     }
 }

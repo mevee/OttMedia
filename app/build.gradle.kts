@@ -75,8 +75,17 @@ dependencies {
     implementation(libs.firebase.config.ktx)
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.firebase.crashlytics)
+
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.ktx)
+
+//    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+//    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
+//    androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
+//    val room_version = "2.6.1"
+//    ksp("androidx.room_versionom:room-compiler:$room_version")
+    androidTestImplementation(libs.androidx.room)
+
     testImplementation(libs.junit)
     testImplementation(libs.junit.junit)
     testImplementation(libs.junit.jupiter)

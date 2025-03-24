@@ -31,7 +31,7 @@ import com.vee.musicapp.ui.theme.Dimens
 fun HomeScreen(
     uiState: State<HomeState<List<Category>>>,
     reloadHomeData: () -> Unit,
-    onItemClicked: (Movie) -> Unit,
+    onItemClicked: (railId: String, Movie) -> Unit,
     onItemScrolled: (railId: String, Movie) -> Unit,
 ) {
     val state = rememberUpdatedState(uiState.value) // Optimized state usage
@@ -69,7 +69,7 @@ fun LoadingView() {
 @Composable
 fun SuccessView(
     data: List<Category>,
-    onItemClicked: (Movie) -> Unit,
+    onItemClicked: (railId: String, Movie) -> Unit,
     onItemScrolled: (railId: String, Movie) -> Unit
 ) {
     val pageData = remember(data) { data.firstOrNull() }
@@ -109,7 +109,7 @@ fun ErrorView(message: String, retryAction: () -> Unit) {
 @Composable
 fun BottomView(
     items: List<Category>,
-    onClick: ((Movie) -> Unit)? = null,
+    onClick: ((railId: String, Movie) -> Unit)? = null,
     onHovered: ((railId: String, Movie) -> Unit)? = null,
 ) {
     val state = rememberLazyListState()
@@ -134,12 +134,12 @@ fun BottomView(
                 when (item.type) {
                     "H" -> HorizontalMovieList(
                         movies = item.movies,
-                        onClick = onClick,
+                        onClick = { onClick?.invoke(item.id, it) },
                         onHovered = { onHovered?.invoke(item.id, it) }
                     )
                     "V" -> VerticalMovieList(
                         movies = item.movies,
-                        onClick = onClick,
+                        onClick = { onClick?.invoke(item.id, it) },
                         onHovered = { onHovered?.invoke(item.id, it) }
                     )
                 }
