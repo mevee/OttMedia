@@ -12,13 +12,21 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import com.vee.musicapp.base.AppViewModelFactory
 import com.vee.musicapp.data.DataSource
 import com.vee.musicapp.data.repo.MovieRepoImpl
+import com.vee.musicapp.firebase.SyncEventsWorker
 import com.vee.musicapp.navigation.Navigation
 import com.vee.musicapp.ui.theme.MusicAppTheme
 import com.vee.musicapp.util.AppConstants
 import com.vee.musicapp.viewmodel.MovieViewModel
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : ComponentActivity() {
@@ -29,6 +37,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        syncServiceInit()
         viewModelSetup()
         setContent {
             MusicAppTheme {
@@ -68,6 +77,19 @@ class MainActivity : ComponentActivity() {
         val factory = AppViewModelFactory(this.application, movieRepository)
         viewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
     }
+
+    private fun syncServiceInit() {
+        val internetConstraint = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED) // Only run when the internet is available
+            .build()
+
+        val workRequest: WorkRequest = PeriodicWorkRequestBuilder<SyncEventsWorker>(1, TimeUnit.HOURS)
+            .setInitialDelay(2, TimeUnit.MINUTES)  // Optional delay
+            .setConstraints(internetConstraint)
+            .build()
+        WorkManager.getInstance(this).enqueue(workRequest)
+    }
+
 }
 
 

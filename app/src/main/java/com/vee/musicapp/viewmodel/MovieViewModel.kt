@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.vee.musicapp.data.models.Category
 import com.vee.musicapp.data.models.DialogConfig
 import com.vee.musicapp.data.models.Movie
@@ -21,52 +22,57 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-
 class MovieViewModel(
     private val context: Application,
-    mRepo: MovieRepoImpl,
+    private val repo: MovieRepoImpl
 ) : ViewModel() {
-    val tag = "MovieViewModel"
-    private val repo: MovieRepoImpl = mRepo
+
+    companion object {
+        private const val TAG = "MovieViewModel"
+    }
+
     var showDialog = mutableStateOf(false)
 
     private val _uiState = MutableStateFlow<HomeState<List<Category>>>(HomeState.Loading)
     val uiState: StateFlow<HomeState<List<Category>>> = _uiState.asStateFlow()
-    private val remoteConfigHelper = RemoteConfigHelper()
-    private val analyticsHelper = FirebaseAnalyticsHelper(context)
-    private val _serviceTerminateState = MutableStateFlow<DialogConfig>(DialogConfig(false, ""))
+
+    private val _serviceTerminateState = MutableStateFlow(DialogConfig(false, ""))
     val serviceTerminateState: StateFlow<DialogConfig> = _serviceTerminateState.asStateFlow()
 
+    private lateinit var remoteConfigHelper: RemoteConfigHelper
+    private lateinit var analyticsHelper: FirebaseAnalyticsHelper
+
     init {
+        initializeHelpers()
         checkServiceTermination()
     }
 
+    private fun initializeHelpers() {
+        remoteConfigHelper = RemoteConfigHelper()
+        analyticsHelper = FirebaseAnalyticsHelper(context)
+    }
+
     fun logData(event: LogEventType, data: Movie, railId: String) {
-        when (event) {
-            LogEventType.MovieClicked -> {
-                analyticsHelper.logEvent(LogEventType.MovieClicked.eventName, Bundle().apply {
-                    putString("movie", data.name)
-                    putString("railId", data.name)
-                })
-            }
-
-            LogEventType.MovieCardVisited -> {
-                analyticsHelper.logEvent(LogEventType.MovieCardVisited.eventName, Bundle().apply {
-                    putString("movie", data.name)
-                    putString("railId", railId)
-                })
-            }
+        val bundle = Bundle().apply {
+            putString("movie", data.name)
+            putString("railId", railId)
         }
-
+        analyticsHelper.logEvent(event.eventName, bundle)
     }
 
     fun checkServiceTermination() {
         viewModelScope.launch(Dispatchers.IO) {
-            remoteConfigHelper.fetchConfig()
-            val dialogConfig = remoteConfigHelper.getDialogConfig()
-            _serviceTerminateState.value = dialogConfig
-            if (dialogConfig.lock) {
-                _uiState.value = HomeState.Error(message = dialogConfig.message)
+            try {
+                remoteConfigHelper.fetchConfig()
+                val dialogConfig = remoteConfigHelper.getDialogConfig()
+                _serviceTerminateState.value = dialogConfig
+
+                if (dialogConfig.lock) {
+                    _uiState.value = HomeState.Error(message = dialogConfig.message)
+                }
+            } catch (e: Exception) {
+                FirebaseCrashlytics.getInstance().recordException(e)
+                _uiState.value = HomeState.Error("Failed to check service termination: ${e.message}")
             }
         }
     }
@@ -75,6 +81,7 @@ class MovieViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             _uiState.value = HomeState.Loading
             delay(1000)
+
             if (!isInternetAvailable(context)) {
                 _uiState.value = HomeState.NetworkError
                 return@launch
@@ -83,22 +90,25 @@ class MovieViewModel(
             try {
                 val response = repo.getHomePageData()
 
-                if (!reloadAfterError) throw Exception("Json Malfunctioned")
+                if (!reloadAfterError) throw IllegalStateException("Json Malfunctioned")
 
                 if (response.isSuccessful) {
-                    val data = response.body()
-
-                    if (!data.isNullOrEmpty()) {
-                        _uiState.value = HomeState.Success(data = data)
-                    } else {
-                        _uiState.value = HomeState.Error(message = "No Data available")
+                    response.body()?.let { data ->
+                        _uiState.value = if (data.isNotEmpty()) {
+                            FirebaseCrashlytics.getInstance().log("App Loaded Successfully")
+                            HomeState.Success(data)
+                        } else {
+                            HomeState.Error("No Data available")
+                        }
+                    } ?: run {
+                        _uiState.value = HomeState.Error("Response body is null")
                     }
                 } else {
-                    _uiState.value =
-                        HomeState.Error(message = "API Failed with code: ${response.code()}")
+                    _uiState.value = HomeState.Error("API Failed with code: ${response.code()}")
                 }
             } catch (e: Exception) {
-                _uiState.value = HomeState.Error(message = "Unexpected error: ${e.message}")
+                FirebaseCrashlytics.getInstance().recordException(e)
+                _uiState.value = HomeState.Error("Unexpected error: ${e.message}")
             }
         }
     }
