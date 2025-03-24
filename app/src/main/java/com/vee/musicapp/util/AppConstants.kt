@@ -10,4 +10,10 @@ object AppConstants {
     val serviceLock :String = "service_locked"
     val welcomeMessage :String =  "Welcome to MyApp!!"
     val noUrlLink = "https://static.vecteezy.com/system/resources/previews/011/860/696/non_2x/its-movie-time-free-vector.jpg"
+
+    object RoomDb{
+        val logDbName:String = "log_database"
+
+
+    }
 }

@@ -75,6 +75,8 @@ dependencies {
     implementation(libs.firebase.config.ktx)
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.firebase.crashlytics)
+    implementation(libs.androidx.room.common)
+    implementation(libs.androidx.room.ktx)
     testImplementation(libs.junit)
     testImplementation(libs.junit.junit)
     testImplementation(libs.junit.jupiter)
