@@ -51,7 +51,7 @@ class MovieViewModel(
 
     private fun initializeHelpers() {
         remoteConfigHelper = RemoteConfigHelper()
-        dao = LogDatabase.getDatabase(context).logDao()
+        dao = LogDatabase.getInstance(context).logDao()
         analyticsHelper = FirebaseAnalyticsHelper(context, dao)
     }
 

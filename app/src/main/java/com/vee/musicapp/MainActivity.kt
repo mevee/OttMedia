@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import com.vee.musicapp.base.AppViewModelFactory
 import com.vee.musicapp.data.DataSource
+import com.vee.musicapp.data.local.db.LogDatabase
 import com.vee.musicapp.data.repo.MovieRepoImpl
 import com.vee.musicapp.navigation.Navigation
 import com.vee.musicapp.ui.theme.MusicAppTheme
@@ -30,6 +31,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         viewModelSetup()
+        val db  = LogDatabase.getInstance(this)
         setContent {
             MusicAppTheme {
                 val terminationState = viewModel.serviceTerminateState.collectAsState()

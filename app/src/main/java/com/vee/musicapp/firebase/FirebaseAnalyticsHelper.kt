@@ -4,10 +4,8 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.vee.musicapp.data.local.dao.LogsDao
-import com.vee.musicapp.data.local.db.LogDatabase
 import com.vee.musicapp.data.local.models.LogItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,8 +13,7 @@ import kotlinx.coroutines.launch
 
 class FirebaseAnalyticsHelper(private val context: Context, private val localStorage: LogsDao) {
     private val TAG = "FirebaseAnalyticsHelper"
-    private val analytics = Firebase.analytics
-//    private val localStorage = LogDatabase.getDatabase(context).logDao()
+    private val analytics = FirebaseAnalytics.getInstance(context)
 
     fun logEvent(eventName: String, params: Bundle? = null) {
         Log.d(TAG, "eventName$eventName::params${params.toString()}")

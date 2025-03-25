@@ -1,10 +1,11 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.google.firebase.crashlytics)
-}
+    alias(libs.plugins.ksp)
+    kotlin("kapt")
+  }
 
 android {
     namespace = "com.vee.musicapp"
@@ -33,18 +34,19 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "17"
-        freeCompilerArgs = listOf("-Xjvm-default=all-compatibility")
+        jvmTarget = "1.8"
+//        freeCompilerArgs = listOf("-Xjvm-default=all-compatibility")
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "2.1.0"
+        kotlinCompilerExtensionVersion = "1.5.1"
+
     }
     packaging {
         resources {
@@ -63,29 +65,20 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
 
-    // Material components optimized for TV apps
-//    implementation(libs.androidx.tv)
     implementation(libs.tv.foundation)
     implementation(libs.tv.material)
 
     implementation(libs.androidx.material3)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.navigation.compose)
+
+    //Firebase
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.config.ktx)
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.firebase.crashlytics)
 
-    implementation(libs.androidx.room.common)
-    implementation(libs.androidx.room.ktx)
-
-//    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
-//    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
-//    androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
-//    val room_version = "2.6.1"
-//    ksp("androidx.room_versionom:room-compiler:$room_version")
-    androidTestImplementation(libs.androidx.room)
-
+    //Testing
     testImplementation(libs.junit)
     testImplementation(libs.junit.junit)
     testImplementation(libs.junit.jupiter)
@@ -96,10 +89,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
-    implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
-    implementation("com.google.accompanist:accompanist-pager:0.31.3-beta")
+    //Image Loading
+    implementation("io.coil-kt.coil3:coil-compose:3.0.1")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.1")
 
+    implementation("com.google.accompanist:accompanist-pager:0.31.3-beta")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.activity:activity-ktx:1.8.2")
 
@@ -115,5 +109,13 @@ dependencies {
     testImplementation("org.mockito:mockito-inline:5.2.0")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+
+    // Room dependencies
+    val roomVersion = "2.6.1" // Use the latest version
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+
+//    implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0")  // Latest version
 
 }
