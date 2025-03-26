@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.google.firebase.crashlytics)
     alias(libs.plugins.ksp)
     kotlin("kapt")
-  }
+}
 
 android {
     namespace = "com.vee.musicapp"
@@ -28,8 +28,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -80,7 +79,6 @@ dependencies {
 
     //Testing
     testImplementation(libs.junit)
-    testImplementation(libs.junit.junit)
     testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -90,32 +88,28 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     //Image Loading
-    implementation("io.coil-kt.coil3:coil-compose:3.0.1")
-    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.1")
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network)
 
-    implementation("com.google.accompanist:accompanist-pager:0.31.3-beta")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation(libs.pager)
+    implementation(libs.viewmodel.ktx)
+    implementation(libs.activity.ktx)
 
     // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:okhttp:4.11.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converg.gson)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
 
     // Testing dependencies
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.mockito:mockito-core:5.10.0")
-    testImplementation("org.mockito:mockito-inline:5.2.0")
-    testImplementation("androidx.arch.core:core-testing:2.2.0")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.core.testing)
+    testImplementation(libs.coroutines.testing)
 
     // Room dependencies
-    val roomVersion = "2.6.1" // Use the latest version
-    implementation("androidx.room:room-runtime:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-
-//    implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0")  // Latest version
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler.kapt)
 
 }

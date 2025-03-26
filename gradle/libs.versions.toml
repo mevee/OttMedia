@@ -8,18 +8,19 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.9.3"
 composeBom = "2024.04.01"
-appcompat = "1.7.0"
-material = "1.12.0"
-activity = "1.10.0"
+lifecycleViewmodelKtx = "2.6.2"
+pager = "0.31.3-beta"
+activity = "1.8.2"
 
 runtimeLivedata = "1.7.8"
 tv-foundation = "1.0.0-alpha11"
 tv-material = "1.0.0"
 
-junitJunit = "4.12"
 junitJupiter = "5.8.1"
+
 hiltNavigationFragment = "1.2.0"
 hiltCompiler = "1.2.0"
+
 navigationCompose = "2.8.9"
 googleGmsGoogleServices = "4.4.2"
 
@@ -27,14 +28,26 @@ firebaseAnalytics = "20.0.0"
 firebaseConfigKtx = "22.1.0"
 firebaseCrashlytics = "19.4.1"
 googleFirebaseCrashlytics = "3.0.3"
-
+coilComposeKotlin = "3.0.1"
+retrofit = "2.9.0"
+okhttp = "4.11.0"
+roomVersion = "2.6.1"
 workRuntimeKtx = "2.10.0"
+
+mockitoCore = "5.10.0"
+mockitoInline = "5.2.0"
+coreTest= "2.2.0"
+coroutinesTest= "1.7.3"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+#TESTING
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
+
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
@@ -48,13 +61,40 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 tv-foundation = { group = "androidx.tv", name = "tv-foundation", version.ref = "tv-foundation" }
 tv-material = { group = "androidx.tv", name = "tv-material", version.ref = "tv-material" }
-junit-junit = { group = "junit", name = "junit", version.ref = "junitJunit" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workRuntimeKtx" }
+
+#Firebase
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
 firebase-config-ktx = { group = "com.google.firebase", name = "firebase-config-ktx", version.ref = "firebaseConfigKtx" }
-androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workRuntimeKtx" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlytics" }
+
+#Image loading
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coilComposeKotlin" }
+coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coilComposeKotlin" }
+
+#Network
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-converg-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+
+#Room
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomVersion" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomVersion" }
+room-compiler-kapt = { group = "androidx.room", name = "room-compiler", version.ref = "roomVersion" }
+
+activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity" }
+viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "pager" }
+
+#More TEST
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoCore" }
+mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockitoInline" }
+core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "coreTest" }
+coroutines-testing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutinesTest" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
